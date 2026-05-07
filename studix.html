@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudiX — Dashboard Personal d'Estudi</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="studix.css">
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">Studi<span>X</span></div>
+    <nav class="nav">
+      <div class="nav-item active" data-page="dashboard" onclick="navigate('dashboard', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Dashboard</span>
+      </div>
+      <div class="nav-item" data-page="assignatures" onclick="navigate('assignatures', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <span>Assignatures</span>
+      </div>
+      <div class="nav-item" data-page="tasques" onclick="navigate('tasques', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span>Tasques</span>
+      </div>
+      <div class="nav-item" data-page="hores" onclick="navigate('hores', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Hores d'estudi</span>
+      </div>
+      <div class="nav-item" data-page="estadistiques" onclick="navigate('estadistiques', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Estadístiques</span>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar">CS</div>
+      <div class="user-info">
+        <div class="user-name">Claudia Soler</div>
+        <div class="user-email">csolercay@uoc.edu</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="page-title" id="topbar-title">Dashboard</div>
+      <div class="date-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span id="date-display"></span>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- DASHBOARD PAGE -->
+      <div class="page active" id="page-dashboard">
+        <div class="kpi-row" id="kpi-row"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px" id="dash-middle"></div>
+        <div class="section-card" id="dash-tasks-section"></div>
+      </div>
+
+      <!-- ASSIGNATURES PAGE -->
+      <div class="page" id="page-assignatures">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+          <div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-add-subject')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nova Assignatura
+          </button>
+        </div>
+        <div class="subjects-grid" id="subjects-grid"></div>
+      </div>
+
+      <!-- TASQUES PAGE -->
+      <div class="page" id="page-tasques">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+          <div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-add-task')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nova Tasca
+          </button>
+        </div>
+        <div class="section-card" style="margin-bottom:16px">
+          <div class="section-header"><span class="section-title">Tasques Pendents</span></div>
+          <div id="tasks-pending-table"></div>
+        </div>
+        <div class="section-card">
+          <div class="section-header"><span class="section-title">Tasques Finalitzades</span></div>
+          <div id="tasks-done-table"></div>
+        </div>
+      </div>
+
+      <!-- HORES PAGE -->
+      <div class="page" id="page-hores">
+        <div class="section-card" style="margin-bottom:20px">
+          <div class="section-header"><span class="section-title">Registrar Hores</span></div>
+          <div class="hours-form">
+            <div class="form-group">
+              <label class="form-label">Hores</label>
+              <input type="number" class="form-input" id="inp-hours" min="0.5" max="24" step="0.5" style="width:90px" placeholder="2">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Assignatura</label>
+              <select class="form-select" id="inp-hours-subject" style="width:180px"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Data</label>
+              <input type="date" class="form-input" id="inp-hours-date" style="width:150px">
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="opacity:0">_</label>
+              <button class="btn btn-primary" onclick="addHours()">Registrar</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-title" style="margin-bottom:12px">Historial</div>
+          <div id="hours-log"></div>
+        </div>
+      </div>
+
+      <!-- ESTADÍSTIQUES PAGE -->
+      <div class="page" id="page-estadistiques">
+        <div class="stats-kpi-row" id="stats-kpi-row"></div>
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px">
+          <div class="chart-container">
+            <div class="chart-title"><span>Hores per Mes</span></div>
+            <div class="bar-chart" id="bar-chart-months"></div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-title">Progrés per Assignatura</div>
+            <div class="subject-progress-list" id="subject-progress-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-add-subject" onclick="closeModal('modal-add-subject', event)">
+  <div class="modal">
+    <h3>Nova Assignatura</h3>
+    <div class="form-group"><label class="form-label">Nom</label><input type="text" class="form-input" id="subj-name" placeholder="Programació Web"></div>
+    <div class="form-group">
+      <label class="form-label">Color</label>
+      <select class="form-select" id="subj-color">
+        <option value="0">Vermell</option><option value="1">Lila</option>
+        <option value="2">Blau</option><option value="3">Verd</option><option value="4">Taronja</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-subject')">Cancel·lar</button>
+      <button class="btn btn-primary" onclick="addSubject()">Crear</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-task" onclick="closeModal('modal-add-task', event)">
+  <div class="modal">
+    <h3>Nova Tasca</h3>
+    <div class="form-group"><label class="form-label">Nom</label><input type="text" class="form-input" id="task-name" placeholder="PAC 2"></div>
+    <div class="form-group"><label class="form-label">Data de lliurament</label><input type="date" class="form-input" id="task-date"></div>
+    <div class="form-group">
+      <label class="form-label">Assignatura</label>
+      <select class="form-select" id="task-subject"></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-task')">Cancel·lar</button>
+      <button class="btn btn-primary" onclick="addTask()">Crear</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="studix.js"></script>
+</body>
+</html>
